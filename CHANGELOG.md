@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.1.0
+
+### Minor Changes
+
+- [#5](https://github.com/praha-inc/react-kit/pull/5) [`efa8853`](https://github.com/praha-inc/react-kit/commit/efa8853e878cc575117f29bf87c5a3cecc851ef1) Thanks [@Karibash](https://github.com/Karibash)! - Add a useRafState
+
 ## 0.0.1
 
 ### Patch Changes
