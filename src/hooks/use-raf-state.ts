@@ -20,12 +20,25 @@ import type { Dispatch, SetStateAction } from 'react';
  *
  * @example
  * ```tsx
- * const [position, setPosition] = useRafState({ x: 0, y: 0 });
+ * import { useRafState } from '@praha/react-kit';
  *
- * const handleMouseMove = (e: MouseEvent) => {
- *   // Updates will be batched to animation frames
- *   setPosition({ x: e.clientX, y: e.clientY });
+ * import type { FC, MouseEvent } from 'react';
+ *
+ * const Component: FC = () => {
+ *   const [position, setPosition] = useRafState({ x: 0, y: 0 });
+ *
+ *   const handleMouseMove = useCallback((event: MouseEvent) => {
+ *     // Updates will be batched to animation frames
+ *     setPosition({ x: event.clientX, y: event.clientY });
+ *   }, []);
+ *
+ *   return (
+ *     <div onMouseMove={handleMouseMove}>
+ *       Mouse Position: {position.x}, {position.y}
+ *     </div>
+ *   );
  * };
+ * ```
  */
 export const useRafState = <T>(initialState: T | (() => T)): [T, Dispatch<SetStateAction<T>>] => {
   const ref = useRef<number | undefined>(undefined);
