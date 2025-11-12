@@ -34,15 +34,16 @@ import type { EffectCallback } from 'react';
  * Usage with cleanup function:
  * ```tsx
  * import { useMount } from '@praha/react-kit';
+ *
  * import type { FC } from 'react';
  *
  * const Component: FC () => {
  *   useMount(() => {
- *     const subscription = subscribeToService();
+ *     console.log('Component mounted!');
  *
  *     // Cleanup function that runs on unmount
  *     return () => {
- *       subscription.unsubscribe();
+ *       console.log('Component unmounted!');
  *     };
  *   });
  *
