@@ -60,7 +60,7 @@
     "@praha/eslint-config-vitest": "1.0.4",
     "@rslib/core": "0.17.1",
     "@testing-library/react": "16.3.0",
-    "@tsconfig/strictest": "2.0.7",
+    "@tsconfig/strictest": "2.0.8",
     "@types/react": "19.2.4",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.1",
