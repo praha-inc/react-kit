@@ -18,15 +18,15 @@ describe('useMount', () => {
   });
 
   test('should not call effect on rerender', () => {
-    const hook = renderHook(() => useMount(effect));
-    hook.rerender();
+    const { rerender } = renderHook(() => useMount(effect));
+    rerender();
 
     expect(effect).toHaveBeenCalledTimes(1);
   });
 
   test('should call cleanup on unmount', () => {
-    const hook = renderHook(() => useMount(effect));
-    hook.unmount();
+    const { unmount } = renderHook(() => useMount(effect));
+    unmount();
 
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
