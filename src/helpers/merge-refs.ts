@@ -1,6 +1,6 @@
 import type { Ref, RefCallback } from 'react';
 
-const setRef = <T>(ref: Ref<T>, value: T) => {
+const setRef = <T>(ref: Ref<T> | undefined, value: T) => {
   if (!ref) return;
   if (typeof ref === 'function') {
     return ref(value);
@@ -75,7 +75,7 @@ const setRef = <T>(ref: Ref<T>, value: T) => {
  * };
  * ```
  */
-export const mergeRefs = <T>(...refs: Ref<T>[]): RefCallback<T> => {
+export const mergeRefs = <T>(...refs: (Ref<T> | undefined)[]): RefCallback<T> => {
   return (value) => {
     const cleanups = refs.map((ref) => setRef(ref, value));
     return () => {
@@ -83,7 +83,7 @@ export const mergeRefs = <T>(...refs: Ref<T>[]): RefCallback<T> => {
         if (typeof cleanup === 'function') {
           cleanup();
         } else {
-          setRef(refs[index]!, null);
+          setRef(refs[index], null);
         }
       });
     };

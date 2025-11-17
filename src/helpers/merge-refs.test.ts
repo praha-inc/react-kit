@@ -23,6 +23,22 @@ describe('mergeRefs', () => {
     expect(callbackRef).toHaveBeenCalledWith(value);
   });
 
+  it('should handle undefined refs gracefully', () => {
+    const ref = undefined;
+    const mergedRef = mergeRefs<string | null>(ref);
+
+    const value = 'value';
+    expect(() => mergedRef(value)).not.toThrow();
+  });
+
+  it('should handle null refs gracefully', () => {
+    const ref = null;
+    const mergedRef = mergeRefs<string | null>(ref);
+
+    const value = 'value';
+    expect(() => mergedRef(value)).not.toThrow();
+  });
+
   it('should merge multiple refs', () => {
     const ref1 = { current: null };
     const ref2 = vi.fn();
