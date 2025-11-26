@@ -20,6 +20,12 @@ describe('useRafState', () => {
     expect(result.current[0]).toBe(0);
   });
 
+  test('should initialize state as undefined when no initial value is provided', () => {
+    const { result } = renderHook(() => useRafState());
+
+    expect(result.current[0]).toBeUndefined();
+  });
+
   test('should update state using a direct value', () => {
     const { result } = renderHook(() => useRafState(0));
     const setState = result.current[1];
