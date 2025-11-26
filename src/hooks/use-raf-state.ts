@@ -15,7 +15,6 @@ import type { Dispatch, SetStateAction } from 'react';
  * animation frame rate.
  *
  * @template T - The type of the state value
- * @param {T | (() => T)} initialState - The initial state value or a function that returns the initial state
  * @returns {[T, Dispatch<SetStateAction<T>>]} A tuple containing the current state and a setter function that schedules updates via requestAnimationFrame
  *
  * @example
@@ -40,11 +39,14 @@ import type { Dispatch, SetStateAction } from 'react';
  * };
  * ```
  */
-export const useRafState = <T>(initialState: T | (() => T)): [T, Dispatch<SetStateAction<T>>] => {
+export const useRafState: {
+  <T = undefined>(): [T | undefined, Dispatch<SetStateAction<T | undefined>>];
+  <T>(initialState: T | (() => T)): [T, Dispatch<SetStateAction<T>>];
+} = <T>(initialState?: T | (() => T)): [T | undefined, Dispatch<SetStateAction<T | undefined>>] => {
   const ref = useRef<number | undefined>(undefined);
-  const [state, setState] = useState(initialState);
+  const [state, setState] = useState<T | undefined>(initialState);
 
-  const setRafState = useCallback<Dispatch<SetStateAction<T>>>((value) => {
+  const setRafState = useCallback<Dispatch<SetStateAction<T | undefined>>>((value) => {
     if (ref.current) cancelAnimationFrame(ref.current);
     ref.current = requestAnimationFrame(() => {
       setState(value);
