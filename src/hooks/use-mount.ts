@@ -19,9 +19,10 @@ import type { EffectCallback } from 'react';
  * Basic usage without cleanup:
  * ```tsx
  * import { useMount } from '@praha/react-kit';
+ *
  * import type { FC } from 'react';
  *
- * const Component: FC () => {
+ * const Component: FC = () => {
  *   useMount(() => {
  *     console.log('Component mounted!');
  *   });
@@ -37,7 +38,7 @@ import type { EffectCallback } from 'react';
  *
  * import type { FC } from 'react';
  *
- * const Component: FC () => {
+ * const Component: FC = () => {
  *   useMount(() => {
  *     console.log('Component mounted!');
  *

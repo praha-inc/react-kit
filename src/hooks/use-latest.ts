@@ -23,7 +23,7 @@ import type { RefObject } from 'react';
  *
  * import type { FC } from 'react';
  *
- * const Component: FC = ({ onClick }) => {
+ * const Component: FC = () => {
  *   const [count, setCount] = useState(0);
  *   const latest = useLatest(count);
  *

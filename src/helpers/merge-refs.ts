@@ -53,7 +53,7 @@ const setRef = <T>(ref: Ref<T> | undefined, value: T) => {
  * Using with custom hooks that return refs:
  * ```tsx
  * import { mergeRefs } from '@praha/react-kit';
- * import { useRef } from 'react';
+ * import { useEffect, useRef } from 'react';
  *
  * import type { FC } from 'react';
  *

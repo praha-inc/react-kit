@@ -25,9 +25,11 @@ type AnyFunction = (...args: any[]) => any;
  * @example
  * ```tsx
  * import { useRafCallback } from '@praha/react-kit';
+ * import { useEffect } from 'react';
+ *
  * import type { FC } from 'react';
  *
- * const Component: FC () => {
+ * const Component: FC = () => {
  *   const handleMouseMove = useRafCallback((event: MouseEvent) => {
  *     // This will log the mouse position at most once per animation frame
  *     console.log(`Mouse position: ${event.clientX}, ${event.clientY}`);

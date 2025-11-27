@@ -20,6 +20,7 @@ import type { Dispatch, SetStateAction } from 'react';
  * @example
  * ```tsx
  * import { useRafState } from '@praha/react-kit';
+ * import { useCallback } from 'react';
  *
  * import type { FC, MouseEvent } from 'react';
  *
