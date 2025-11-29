@@ -25,6 +25,14 @@ export type UseSizeOptions = {
    * @returns The element to observe for size changes, or null to disable observation.
    */
   query?: ((element: Element) => Element | null) | undefined;
+  /**
+   * An optional function to transform the measured size before updating the state.
+   * This is useful for adjusting dimensions, applying scaling, rounding values, or enforcing constraints.
+   *
+   * @param size - The measured size object containing width and height.
+   * @returns The transformed size object.
+   */
+  transform?: (size: Size) => Size;
 };
 
 /**
@@ -42,6 +50,8 @@ export type UseSizeOptions = {
  * @param options.query - An optional function to select a specific element to observe.
  * If provided, it receives the ref element and should return the target element to measure.
  * This is useful when you want to measure a child or ancestor element instead of the ref element itself.
+ * @param options.transform - An optional function to transform the measured size before updating the state.
+ * This is useful for adjusting dimensions, applying scaling, rounding values, or enforcing constraints.
  *
  * @returns A tuple containing:
  * - A ref callback to attach to the element you want to observe.
@@ -111,10 +121,34 @@ export type UseSizeOptions = {
  *   );
  * };
  * ```
+ *
+ * @example
+ * Using the transform option to round size values:
+ * ```tsx
+ * import { useSize } from '@praha/react-kit';
+ *
+ * import type { FC } from 'react';
+ *
+ * const Component: FC = () => {
+ *   const [ref, size] = useSize({
+ *     transform: (size) => ({
+ *       width: Math.round(size.width),
+ *       height: Math.round(size.height),
+ *     }),
+ *   });
+ *
+ *   return (
+ *     <div ref={ref}>
+ *       Size: {size ? `${size.width}x${size.height}` : 'N/A'}
+ *     </div>
+ *   );
+ * };
+ * ```
  */
 export const useSize = (options?: UseSizeOptions): [RefCallback<Element>, Size | undefined] => {
   const [size, setSize] = useRafState<Size>();
   const query = useLatest(options?.query);
+  const transform = useLatest(options?.transform);
 
   const ref = useCallback<RefCallback<Element>>((element: Element) => {
     const target = query.current ? query.current(element) : element;
@@ -125,8 +159,8 @@ export const useSize = (options?: UseSizeOptions): [RefCallback<Element>, Size |
 
     const resizeObserver = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
-        const rect = entry.target.getBoundingClientRect();
-        setSize({ width: rect.width, height: rect.height });
+        const { width, height } = entry.target.getBoundingClientRect();
+        setSize(transform.current ? transform.current({ width, height }) : { width, height });
       });
     });
 

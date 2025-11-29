@@ -34,7 +34,7 @@ describe('useSize', () => {
       result.current[0](createElement(100, 100));
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 100, width: 100 });
+    expect(result.current[1]).toEqual({ width: 100, height: 100 });
   });
 
   test('should return undefined size when ref is not set', () => {
@@ -50,13 +50,13 @@ describe('useSize', () => {
       result.current[0](createElement(100, 100));
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 100, width: 100 });
+    expect(result.current[1]).toEqual({ width: 100, height: 100 });
 
     act(() => {
       result.current[0](createElement(200, 200));
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 200, width: 200 });
+    expect(result.current[1]).toEqual({ width: 200, height: 200 });
   });
 
   test('should update size when ResizeObserver triggers', () => {
@@ -66,13 +66,13 @@ describe('useSize', () => {
       result.current[0](createElement(100, 100));
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 100, width: 100 });
+    expect(result.current[1]).toEqual({ width: 100, height: 100 });
 
     act(() => {
       resizeObserverCallback([{ target: createElement(200, 200) } as ResizeObserverEntry], {} as ResizeObserver);
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 200, width: 200 });
+    expect(result.current[1]).toEqual({ width: 200, height: 200 });
   });
 
   test('should return size of the element from callback', () => {
@@ -84,7 +84,7 @@ describe('useSize', () => {
       result.current[0](createElement(100, 100));
       vi.advanceTimersToNextFrame();
     });
-    expect(result.current[1]).toEqual({ height: 200, width: 200 });
+    expect(result.current[1]).toEqual({ width: 200, height: 200 });
   });
 
   test('should return undefined size when callback returns null', () => {
@@ -97,5 +97,41 @@ describe('useSize', () => {
       vi.advanceTimersToNextFrame();
     });
     expect(result.current[1]).toBeUndefined();
+  });
+
+  test('should transform size using transform option', () => {
+    const { result } = renderHook(() => useSize({
+      transform: (size) => ({
+        width: Math.round(size.width),
+        height: Math.round(size.height),
+      }),
+    }));
+
+    act(() => {
+      result.current[0](createElement(100.1, 200.1));
+      vi.advanceTimersToNextFrame();
+    });
+    expect(result.current[1]).toEqual({ width: 100, height: 200 });
+  });
+
+  test('should apply transform when ResizeObserver triggers', () => {
+    const { result } = renderHook(() => useSize({
+      transform: (size) => ({
+        width: Math.round(size.width),
+        height: Math.round(size.height),
+      }),
+    }));
+
+    act(() => {
+      result.current[0](createElement(100.1, 200.1));
+      vi.advanceTimersToNextFrame();
+    });
+    expect(result.current[1]).toEqual({ width: 100, height: 200 });
+
+    act(() => {
+      resizeObserverCallback([{ target: createElement(150.1, 250.1) } as ResizeObserverEntry], {} as ResizeObserver);
+      vi.advanceTimersToNextFrame();
+    });
+    expect(result.current[1]).toEqual({ width: 150, height: 250 });
   });
 });
