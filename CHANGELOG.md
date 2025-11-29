@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.2.1
+
+### Patch Changes
+
+- [#38](https://github.com/praha-inc/react-kit/pull/38) [`dd954d1`](https://github.com/praha-inc/react-kit/commit/dd954d18d322626ca87b278cd9518ca2a007bdee) Thanks [@Karibash](https://github.com/Karibash)! - Fix missing export of the useSize
+
 ## 0.2.0
 
 ### Minor Changes
