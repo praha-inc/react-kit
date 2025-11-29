@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.2.2
+
+### Patch Changes
+
+- [#40](https://github.com/praha-inc/react-kit/pull/40) [`51d23e5`](https://github.com/praha-inc/react-kit/commit/51d23e594d5a9cfa961e7c1457a537f7a88e4354) Thanks [@Karibash](https://github.com/Karibash)! - Add transform option in useSize
+
 ## 0.2.1
 
 ### Patch Changes
