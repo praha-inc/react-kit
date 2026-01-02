@@ -33,8 +33,8 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(b0a5833e6a1fa648398021958744fe98)
       '@rslib/core':
-        specifier: 0.18.6
-        version: 0.18.6(typescript@5.9.3)
+        specifier: 0.19.0
+        version: 0.19.0(typescript@5.9.3)
       '@testing-library/react':
         specifier: 16.3.1
         version: 16.3.1(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -778,8 +778,8 @@ packages:
     engines: {node: '>=18.12.0'}
     hasBin: true
 
-  '@rslib/core@0.18.6':
-    resolution: {integrity: sha512-mMjfmtXRPHOCzO1A8KcAQckIHi/vA+qOHT/zK4M8Nnr5h1eAO6HIEN7AvJdgbIf5YXsVH6bXonrXdAwwP0gHow==}
+  '@rslib/core@0.19.0':
+    resolution: {integrity: sha512-t94QnZGU8YSn5xQ8vNqxIpee5Mo+S77SEVA/0Tjft0I0dLmU6GZHeYAmoztNfWLudSUl4KrvilnxGPlySMdPvw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
     peerDependencies:
@@ -1983,8 +1983,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  rsbuild-plugin-dts@0.18.6:
-    resolution: {integrity: sha512-E0KxiXxY5T3D+DjMMQS3/DMlNwjzNp1xEYyH68gwI7Ptm3a1ChawvlZ1DqVW5m8NWkdbCbcAyazwOnDD3yVOLQ==}
+  rsbuild-plugin-dts@0.19.0:
+    resolution: {integrity: sha512-5NkHONFDMBXv0qr1voHQigVhPmqai2icbJtckXJSCrpSTAJO0eXkGsHNVR8QvnsZEZWXL+KsIgNEJ7C8tYginQ==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
       '@microsoft/api-extractor': ^7
@@ -3076,10 +3076,10 @@ snapshots:
       core-js: 3.47.0
       jiti: 2.6.1
 
-  '@rslib/core@0.18.6(typescript@5.9.3)':
+  '@rslib/core@0.19.0(typescript@5.9.3)':
     dependencies:
       '@rsbuild/core': 1.7.0-beta.2
-      rsbuild-plugin-dts: 0.18.6(@rsbuild/core@1.7.0-beta.2)(typescript@5.9.3)
+      rsbuild-plugin-dts: 0.19.0(@rsbuild/core@1.7.0-beta.2)(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -4290,7 +4290,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.52.5
       fsevents: 2.3.3
 
-  rsbuild-plugin-dts@0.18.6(@rsbuild/core@1.7.0-beta.2)(typescript@5.9.3):
+  rsbuild-plugin-dts@0.19.0(@rsbuild/core@1.7.0-beta.2)(typescript@5.9.3):
     dependencies:
       '@ast-grep/napi': 0.37.0
       '@rsbuild/core': 1.7.0-beta.2
