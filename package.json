@@ -63,7 +63,7 @@
     "@tsconfig/strictest": "2.0.8",
     "@types/react": "19.2.13",
     "@types/react-dom": "19.2.3",
-    "eslint": "9.39.2",
+    "eslint": "10.0.0",
     "jsdom": "27.4.0",
     "pkg-pr-new": "0.0.63",
     "react": "19.2.4",
