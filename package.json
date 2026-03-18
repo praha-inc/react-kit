@@ -64,7 +64,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
-    "jsdom": "27.4.0",
+    "jsdom": "28.1.0",
     "pkg-pr-new": "0.0.66",
     "react": "19.2.4",
     "react-dom": "19.2.4",
