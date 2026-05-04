@@ -65,7 +65,7 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
     "jsdom": "27.4.0",
-    "pkg-pr-new": "0.0.67",
+    "pkg-pr-new": "0.0.69",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "typescript": "5.9.3",
