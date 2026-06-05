@@ -61,6 +61,9 @@
     "version:publish": "changeset publish",
     "version:prepublish": "pkg-pr-new publish --pnpm --compact"
   },
+  "dependencies": {
+    "@standard-schema/spec": "^1.1.0"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "0.7.0",
     "@changesets/cli": "2.31.0",
