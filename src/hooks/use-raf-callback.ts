@@ -57,5 +57,6 @@ export const useRafCallback = <T extends AnyFunction>(
       callbackRef.current(...args);
       rafRef.current = null;
     });
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };
