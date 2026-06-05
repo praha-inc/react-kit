@@ -53,5 +53,6 @@ import type { EffectCallback } from 'react';
  * ```
  */
 export const useMount = (effect: EffectCallback): void => {
+  // oxlint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, []);
 };

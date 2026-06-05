@@ -22,7 +22,7 @@ describe('useLatest', () => {
     const { result, rerender } = renderHook(
       ({ value }) => {
         const callback = useLatest(value);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return react-hooks/exhaustive-deps
         return useCallback(() => callback.current(), []);
       },
       { initialProps: { value: callback } },
