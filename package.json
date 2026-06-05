@@ -23,7 +23,7 @@
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/cjs/index.d.ts",
+        "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       },
       "import": {
@@ -33,7 +33,7 @@
     },
     "./helpers": {
       "require": {
-        "types": "./dist/cjs/helpers/index.d.ts",
+        "types": "./dist/cjs/helpers/index.d.cts",
         "default": "./dist/cjs/helpers/index.cjs"
       },
       "import": {
@@ -44,7 +44,7 @@
   },
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.js",
-  "types": "./dist/cjs/index.d.ts",
+  "types": "./dist/cjs/index.d.cts",
   "files": [
     "dist",
     "LICENSE",
