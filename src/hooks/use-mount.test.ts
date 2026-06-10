@@ -30,4 +30,20 @@ describe('useMount', () => {
 
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
+
+  test('should return true when mounted', () => {
+    const { result } = renderHook(() => useMount(effect));
+
+    expect(result.current).toBe(true);
+  });
+
+  test('should return false before mount', () => {
+    let isMounted: boolean | undefined;
+    renderHook(() => {
+      const result = useMount(effect);
+      if (isMounted === undefined) isMounted = result;
+    });
+
+    expect(isMounted).toBe(false);
+  });
 });
