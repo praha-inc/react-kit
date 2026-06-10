@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.2.4
+
+### Patch Changes
+
+- [#193](https://github.com/praha-inc/react-kit/pull/193) [`7562ced`](https://github.com/praha-inc/react-kit/commit/7562ced2c25da860148fc7ff7cb8e1e78d289731) Thanks [@Karibash](https://github.com/Karibash)! - Make effect argument optional in useMount
+
 ## 0.2.3
 
 ### Patch Changes
