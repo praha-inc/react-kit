@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { EffectCallback } from 'react';
 
@@ -13,7 +13,7 @@ import type { EffectCallback } from 'react';
  * This function follows the same signature as React's `useEffect` callback, meaning it can
  * optionally return a cleanup function that will be called when the component unmounts.
  *
- * @returns void - This hook does not return any value.
+ * @returns A boolean state that is `true` when the component is mounted and `false` when unmounted.
  *
  * @example
  * Basic usage without cleanup:
@@ -52,7 +52,17 @@ import type { EffectCallback } from 'react';
  * };
  * ```
  */
-export const useMount = (effect: EffectCallback): void => {
+export const useMount = (effect: EffectCallback): boolean => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const cleanup = effect();
+    return () => {
+      if (typeof cleanup === 'function') cleanup();
+    };
   // oxlint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(effect, []);
+  }, []);
+
+  return isMounted;
 };
