@@ -9,9 +9,10 @@ import type { EffectCallback } from 'react';
  * It ensures that the provided effect callback is executed only once during the component's
  * lifecycle - specifically when the component is first mounted to the DOM.
  *
- * @param effect - A callback function that will be executed when the component mounts.
+ * @param effect - An optional callback function that will be executed when the component mounts.
  * This function follows the same signature as React's `useEffect` callback, meaning it can
  * optionally return a cleanup function that will be called when the component unmounts.
+ * If omitted, the hook still tracks and returns the mounted state.
  *
  * @returns A boolean state that is `true` when the component is mounted and `false` when unmounted.
  *
@@ -52,12 +53,12 @@ import type { EffectCallback } from 'react';
  * };
  * ```
  */
-export const useMount = (effect: EffectCallback): boolean => {
+export const useMount = (effect?: EffectCallback): boolean => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const cleanup = effect();
+    const cleanup = effect?.();
     return () => {
       if (typeof cleanup === 'function') cleanup();
     };
