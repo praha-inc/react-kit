@@ -1,45 +1,41 @@
-import { renderHook } from '@testing-library/react';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
+import { renderHook } from 'vitest-browser-react';
 
 import { useMount } from './use-mount';
 
 describe('useMount', () => {
-  const effect = vi.fn();
   const cleanup = vi.fn();
+  const effect = vi.fn(() => cleanup);
 
-  beforeEach(() => {
-    effect.mockReturnValue(cleanup);
-  });
-
-  test('should call effect on mount', () => {
-    renderHook(() => useMount(effect));
+  test('should call effect on mount', async () => {
+    await renderHook(() => useMount(effect));
 
     expect(effect).toHaveBeenCalledTimes(1);
   });
 
-  test('should not call effect on rerender', () => {
-    const { rerender } = renderHook(() => useMount(effect));
-    rerender();
+  test('should not call effect on rerender', async () => {
+    const { rerender } = await renderHook(() => useMount(effect));
+    await rerender();
 
     expect(effect).toHaveBeenCalledTimes(1);
   });
 
-  test('should call cleanup on unmount', () => {
-    const { unmount } = renderHook(() => useMount(effect));
-    unmount();
+  test('should call cleanup on unmount', async () => {
+    const { rerender } = await renderHook(() => useMount(effect));
+    await rerender();
 
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
 
-  test('should return true when mounted', () => {
-    const { result } = renderHook(() => useMount(effect));
+  test('should return true when mounted', async () => {
+    const { result } = await renderHook(() => useMount(effect));
 
     expect(result.current).toBe(true);
   });
 
-  test('should return false before mount', () => {
+  test('should return false before mount', async () => {
     let isMounted: boolean | undefined;
-    renderHook(() => {
+    await renderHook(() => {
       const result = useMount(effect);
       if (isMounted === undefined) isMounted = result;
     });
