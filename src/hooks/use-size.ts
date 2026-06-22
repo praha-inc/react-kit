@@ -13,7 +13,7 @@ export type Size = {
   height: number;
 };
 
-/** Configuration options for the useSize hook. */
+/** Configuration options for {@link useSize}. */
 export type UseSizeOptions = {
   /**
    * An optional function to query and select a specific element to observe.
