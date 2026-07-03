@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.3.0
+
+### Minor Changes
+
+- [#209](https://github.com/praha-inc/react-kit/pull/209) [`b8290c1`](https://github.com/praha-inc/react-kit/commit/b8290c1df81203878e66c1564f13802f68dabfdd) Thanks [@Karibash](https://github.com/Karibash)! - Add a useStorageState
+
 ## 0.2.4
 
 ### Patch Changes
