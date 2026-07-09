@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.3.1
+
+### Patch Changes
+
+- [#225](https://github.com/praha-inc/react-kit/pull/225) [`7b4ff77`](https://github.com/praha-inc/react-kit/commit/7b4ff77045540613a42f3e7b58ef4b586e002e46) Thanks [@Karibash](https://github.com/Karibash)! - Allow useMount to accept an async effect
+
 ## 0.3.0
 
 ### Minor Changes
