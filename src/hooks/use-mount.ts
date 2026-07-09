@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import type { EffectCallback } from 'react';
 
+export type MountCallback = EffectCallback | (() => Promise<void>);
+
 /**
  * A React hook that executes a callback function only once when the component mounts.
  *
@@ -9,9 +11,11 @@ import type { EffectCallback } from 'react';
  * It ensures that the provided effect callback is executed only once during the component's
  * lifecycle - specifically when the component is first mounted to the DOM.
  *
- * @param effect - An optional callback function that will be executed when the component mounts.
+ * @param fn - An optional callback function that will be executed when the component mounts.
  * This function follows the same signature as React's `useEffect` callback, meaning it can
  * optionally return a cleanup function that will be called when the component unmounts.
+ * An async function is also accepted, but in that case the cleanup function is not supported,
+ * since React cannot wait for the promise to resolve before unmounting.
  * If omitted, the hook still tracks and returns the mounted state.
  *
  * @returns A boolean state that is `true` when the component is mounted and `false` when unmounted.
@@ -52,13 +56,32 @@ import type { EffectCallback } from 'react';
  *   return <div>Hello World</div>;
  * };
  * ```
+ *
+ * @example
+ * Usage with an async effect (cleanup is not supported in this case):
+ * ```tsx
+ * import { useMount } from '@praha/react-kit';
+ *
+ * import type { FC } from 'react';
+ *
+ * const Component: FC = () => {
+ *   useMount(async () => {
+ *     const data = await fetchData();
+ *     console.log('Data fetched!', data);
+ *   });
+ *
+ *   return <div>Hello World</div>;
+ * };
+ * ```
  */
-export const useMount = (effect?: EffectCallback): boolean => {
+export const useMount = (fn?: MountCallback): boolean => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const cleanup = effect?.();
+    const result = fn?.();
+    if (result instanceof Promise) return;
+    const cleanup = result;
     return () => {
       if (typeof cleanup === 'function') cleanup();
     };

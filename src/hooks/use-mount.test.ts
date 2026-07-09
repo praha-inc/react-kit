@@ -42,4 +42,12 @@ describe('useMount', () => {
 
     expect(isMounted).toBe(false);
   });
+
+  test('should call an async effect on mount', async () => {
+    const asyncEffect = vi.fn(async () => {});
+
+    await renderHook(() => useMount(asyncEffect));
+
+    expect(asyncEffect).toHaveBeenCalledTimes(1);
+  });
 });
