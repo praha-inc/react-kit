@@ -76,7 +76,7 @@
     "@vitejs/plugin-react": "6.0.3",
     "@vitest/browser-playwright": "4.1.10",
     "oxlint": "1.74.0",
-    "oxlint-tsgolint": "0.24.0",
+    "oxlint-tsgolint": "0.25.0",
     "pkg-pr-new": "0.0.78",
     "playwright": "1.61.1",
     "react": "19.2.7",
