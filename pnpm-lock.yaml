@@ -20,7 +20,7 @@ importers:
         version: 2.31.1
       '@praha/oxlint-config-react':
         specifier: 1.0.0-beta.7
-        version: 1.0.0-beta.7(eslint@10.7.0)(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7))(typescript@6.0.3)
+        version: 1.0.0-beta.7(eslint@10.7.0)(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8))(typescript@6.0.3)
       '@praha/oxlint-config-standard':
         specifier: 1.0.0-beta.7
         version: 1.0.0-beta.7(@praha/byethrow@0.12.0(typescript@6.0.3))(@typescript-eslint/utils@8.64.0(eslint@10.7.0)(typescript@6.0.3))(eslint@10.7.0)(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))
@@ -55,11 +55,11 @@ importers:
         specifier: 1.62.0
         version: 1.62.0
       react:
-        specifier: 19.2.7
-        version: 19.2.7
+        specifier: 19.2.8
+        version: 19.2.8
       react-dom:
-        specifier: 19.2.7
-        version: 19.2.7(react@19.2.7)
+        specifier: 19.2.8
+        version: 19.2.8(react@19.2.8)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -68,7 +68,7 @@ importers:
         version: 4.1.10(@vitest/browser-playwright@4.1.10)(vite@8.1.5(esbuild@0.28.1))
       vitest-browser-react:
         specifier: 2.2.0
-        version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.10)
+        version: 2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vitest@4.1.10)
 
 packages:
 
@@ -2217,16 +2217,16 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.2.7:
-    resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
+  react-dom@19.2.8:
+    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
-      react: ^19.2.7
+      react: ^19.2.8
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
-  react@19.2.7:
-    resolution: {integrity: sha512-HNe9WslTbXmFK8o8cmwgAeJFSBvt1bPdHCVKtaaV+WlAN36mpT4hcRpwbf3fY56ar2oIXzsBpOAiIRHAdY0OlQ==}
+  react@19.2.8:
+    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
     engines: {node: '>=0.10.0'}
 
   read-yaml-file@1.1.0:
@@ -3273,13 +3273,13 @@ snapshots:
       oxlint: 1.74.0(oxlint-tsgolint@0.25.0)
       oxlint-tsgolint: 0.25.0
 
-  '@praha/oxlint-config-react@1.0.0-beta.7(eslint@10.7.0)(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7))(typescript@6.0.3)':
+  '@praha/oxlint-config-react@1.0.0-beta.7(eslint@10.7.0)(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8))(typescript@6.0.3)':
     dependencies:
       '@praha/oxlint-config-internal': 1.0.0-beta.7(oxlint-tsgolint@0.25.0)(oxlint@1.74.0(oxlint-tsgolint@0.25.0))
-      eslint-plugin-storybook: 10.5.2(eslint@10.7.0)(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7))(typescript@6.0.3)
+      eslint-plugin-storybook: 10.5.2(eslint@10.7.0)(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8))(typescript@6.0.3)
       oxlint: 1.74.0(oxlint-tsgolint@0.25.0)
       oxlint-tsgolint: 0.25.0
-      storybook: 10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7)
+      storybook: 10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8)
     transitivePeerDependencies:
       - eslint
       - supports-color
@@ -3436,9 +3436,9 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/icons@2.1.0(react@19.2.7)':
+  '@storybook/icons@2.1.0(react@19.2.8)':
     dependencies:
-      react: 19.2.7
+      react: 19.2.8
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.7.0)':
     dependencies:
@@ -3945,12 +3945,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-storybook@10.5.2(eslint@10.7.0)(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7))(typescript@6.0.3):
+  eslint-plugin-storybook@10.5.2(eslint@10.7.0)(storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8))(typescript@6.0.3):
     dependencies:
       '@typescript-eslint/types': 8.64.0
       '@typescript-eslint/utils': 8.64.0(eslint@10.7.0)(typescript@6.0.3)
       eslint: 10.7.0
-      storybook: 10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7)
+      storybook: 10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -4506,14 +4506,14 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.2.7(react@19.2.7):
+  react-dom@19.2.8(react@19.2.8):
     dependencies:
-      react: 19.2.7
+      react: 19.2.8
       scheduler: 0.27.0
 
   react-is@17.0.2: {}
 
-  react@19.2.7: {}
+  react@19.2.8: {}
 
   read-yaml-file@1.1.0:
     dependencies:
@@ -4622,10 +4622,10 @@ snapshots:
 
   std-env@4.2.0: {}
 
-  storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.7):
+  storybook@10.5.2(@types/react@19.2.17)(prettier@2.8.8)(react@19.2.8):
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/icons': 2.1.0(react@19.2.7)
+      '@storybook/icons': 2.1.0(react@19.2.8)
       '@testing-library/dom': 10.4.1
       '@testing-library/jest-dom': 6.9.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
@@ -4639,7 +4639,7 @@ snapshots:
       oxc-resolver: 11.24.2
       recast: 0.23.12
       semver: 7.8.5
-      use-sync-external-store: 1.6.0(react@19.2.7)
+      use-sync-external-store: 1.6.0(react@19.2.8)
       ws: 8.21.1
     optionalDependencies:
       '@types/react': 19.2.17
@@ -4739,9 +4739,9 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-sync-external-store@1.6.0(react@19.2.7):
+  use-sync-external-store@1.6.0(react@19.2.8):
     dependencies:
-      react: 19.2.7
+      react: 19.2.8
 
   vite@8.1.5(esbuild@0.28.1):
     dependencies:
@@ -4754,10 +4754,10 @@ snapshots:
       esbuild: 0.28.1
       fsevents: 2.3.3
 
-  vitest-browser-react@2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.10):
+  vitest-browser-react@2.2.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(vitest@4.1.10):
     dependencies:
-      react: 19.2.7
-      react-dom: 19.2.7(react@19.2.7)
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
       vitest: 4.1.10(@vitest/browser-playwright@4.1.10)(vite@8.1.5(esbuild@0.28.1))
     optionalDependencies:
       '@types/react': 19.2.17

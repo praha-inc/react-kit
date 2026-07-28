@@ -79,8 +79,8 @@
     "oxlint-tsgolint": "0.25.0",
     "pkg-pr-new": "0.0.80",
     "playwright": "1.62.0",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "typescript": "6.0.3",
     "vitest": "4.1.10",
     "vitest-browser-react": "2.2.0"
