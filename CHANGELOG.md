@@ -1,5 +1,11 @@
 # @praha/react-kit
 
+## 0.4.0
+
+### Minor Changes
+
+- [#263](https://github.com/praha-inc/react-kit/pull/263) [`6bbc9b1`](https://github.com/praha-inc/react-kit/commit/6bbc9b1d1f715339f75bda4a7e1723b7319787a8) Thanks [@Karibash](https://github.com/Karibash)! - Add mergeProps helper for merging React props
+
 ## 0.3.1
 
 ### Patch Changes
