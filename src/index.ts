@@ -4,4 +4,5 @@ export * from './hooks/use-mount-state';
 export * from './hooks/use-raf-callback';
 export * from './hooks/use-raf-state';
 export * from './hooks/use-size';
+export * from './hooks/use-storage-ref';
 export * from './hooks/use-storage-state';
