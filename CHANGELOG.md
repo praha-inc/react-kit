@@ -1,5 +1,28 @@
 # @praha/react-kit
 
+## 0.5.0
+
+### Minor Changes
+
+- [#268](https://github.com/praha-inc/react-kit/pull/268) [`28e7ac4`](https://github.com/praha-inc/react-kit/commit/28e7ac4440af21a06f5feee8582c2a4444abe039) Thanks [@Karibash](https://github.com/Karibash)! - Add a useStorageRef hook for persisting values to storage without triggering re-renders
+
+- [#265](https://github.com/praha-inc/react-kit/pull/265) [`69e8602`](https://github.com/praha-inc/react-kit/commit/69e8602b177ddd7e2a0272d66715aadbf8da378d) Thanks [@Karibash](https://github.com/Karibash)! - Add useMountState hook and simplify useMount
+
+  **BREAKING CHANGE:** `useMount` no longer tracks or returns the mounted state, and its `fn` argument is now required instead of optional.
+
+  - `useMount` now returns `void` (previously returned a `boolean` indicating whether the component was mounted).
+  - Use the new `useMountState` hook if you need the mounted state.
+
+  ```diff
+  - const isMounted = useMount(callback);
+  + useMount(callback);
+  + const isMounted = useMountState();
+  ```
+
+### Patch Changes
+
+- [#267](https://github.com/praha-inc/react-kit/pull/267) [`6634af7`](https://github.com/praha-inc/react-kit/commit/6634af7a53557f327b500e9e47ac1f613fe90f8c) Thanks [@Karibash](https://github.com/Karibash)! - Add onRestored callback to useStorageState
+
 ## 0.4.0
 
 ### Minor Changes
