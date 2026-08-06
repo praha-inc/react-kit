@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import type { EffectCallback } from 'react';
 
@@ -11,14 +11,11 @@ export type MountCallback = EffectCallback | (() => Promise<void>);
  * It ensures that the provided effect callback is executed only once during the component's
  * lifecycle - specifically when the component is first mounted to the DOM.
  *
- * @param fn - An optional callback function that will be executed when the component mounts.
+ * @param fn - A callback function that will be executed when the component mounts.
  * This function follows the same signature as React's `useEffect` callback, meaning it can
  * optionally return a cleanup function that will be called when the component unmounts.
  * An async function is also accepted, but in that case the cleanup function is not supported,
  * since React cannot wait for the promise to resolve before unmounting.
- * If omitted, the hook still tracks and returns the mounted state.
- *
- * @returns A boolean state that is `true` when the component is mounted and `false` when unmounted.
  *
  * @example
  * Basic usage without cleanup:
@@ -74,12 +71,9 @@ export type MountCallback = EffectCallback | (() => Promise<void>);
  * };
  * ```
  */
-export const useMount = (fn?: MountCallback): boolean => {
-  const [isMounted, setIsMounted] = useState(false);
-
+export const useMount = (fn: MountCallback): void => {
   useEffect(() => {
-    setIsMounted(true);
-    const result = fn?.();
+    const result = fn();
     if (result instanceof Promise) return;
     const cleanup = result;
     return () => {
@@ -87,6 +81,4 @@ export const useMount = (fn?: MountCallback): boolean => {
     };
   // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  return isMounted;
 };
