@@ -202,6 +202,24 @@ describe('useStorageState', () => {
     expect(result.current[0]).toBeUndefined();
   });
 
+  test('should call onRestored once with the initial value read from storage', async () => {
+    localStorage.setItem('test', JSON.stringify('initial'));
+
+    const onRestored = vi.fn();
+
+    const { result, act } = await renderHook(() =>
+      useStorageState({ key: 'test', storage: localStorage, schema: anySchema, onRestored }),
+    );
+
+    expect(onRestored).toHaveBeenCalledExactlyOnceWith('initial');
+
+    await act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(onRestored).toHaveBeenCalledExactlyOnceWith('initial');
+  });
+
   test('should notify other hooks watching the same key when setState is called', async () => {
     const { result: hookA, act } = await renderHook(() =>
       useStorageState({ key: 'shared', storage: localStorage, schema: anySchema }),
