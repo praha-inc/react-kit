@@ -1,48 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 
 import { isFunction } from '../internals/is-function';
+import { parseJsonString } from '../internals/parse-json-string';
+import { notify, subscribe } from '../internals/storage-event-bus';
+import { validateSchema } from '../internals/validate-schema';
 
 import type { StandardSchemaV1 } from '@standard-schema/spec';
 import type { Dispatch, SetStateAction } from 'react';
 
-type InferOutput<Schema extends StandardSchemaV1> = StandardSchemaV1.InferOutput<Schema>;
-
 const noop = () => undefined;
-
-const listeners = new WeakMap<Storage, Map<string, Set<() => void>>>();
-const getOrCreateListeners = (storage: Storage, key: string): Set<() => void> => {
-  if (!listeners.has(storage)) listeners.set(storage, new Map());
-  const keyMap = listeners.get(storage)!;
-  if (!keyMap.has(key)) keyMap.set(key, new Set());
-  return keyMap.get(key)!;
-};
-
-const parse = (snapshot: string | undefined): unknown => {
-  if (!snapshot) return undefined;
-  try {
-    return JSON.parse(snapshot);
-  } catch (error) {
-    console.warn(`Failed to parse storage value for "${snapshot}":`, error);
-    return undefined;
-  }
-};
-
-const validate = <Schema extends StandardSchemaV1>(
-  parsed: unknown,
-  schema: Schema,
-): InferOutput<Schema> => {
-  const result = schema['~standard'].validate(parsed);
-
-  if (result instanceof Promise) {
-    throw new TypeError('async schema validation is not supported');
-  }
-
-  if (result.issues) {
-    throw new TypeError('invalid storage value', { cause: result.issues });
-  }
-
-  return result.value;
-};
 
 /**
  * Options for {@link useStorageState}.
@@ -60,11 +26,11 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
    * Custom equality function used to skip writes when the next value equals the current value.
    * Defaults to `Object.is`.
    */
-  equals?: ((a: InferOutput<Schema>, b: InferOutput<Schema>) => boolean) | undefined;
+  equals?: ((a: StandardSchemaV1.InferOutput<Schema>, b: StandardSchemaV1.InferOutput<Schema>) => boolean) | undefined;
   /**
    * Callback invoked once with the value read from storage the first time it is read.
    */
-  onRestored?: ((value: InferOutput<Schema>) => void) | undefined;
+  onRestored?: ((value: StandardSchemaV1.InferOutput<Schema>) => void) | undefined;
 };
 
 /**
@@ -115,12 +81,11 @@ export type UseStorageSetState<T> = Dispatch<SetStateAction<T>>;
  */
 export const useStorageState = <Schema extends StandardSchemaV1>(
   options: UseStorageStateOptions<Schema>,
-): [InferOutput<Schema>, UseStorageSetState<InferOutput<Schema>>] => {
-  const subscribe = useCallback((onStoreChange: () => void) => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
+  const subscribeToStore = useCallback((onStoreChange: () => void) => {
     if (!options.storage) throw new Error('storage is not available');
 
-    const listenerSet = getOrCreateListeners(options.storage, options.key);
-    listenerSet.add(onStoreChange);
+    const unsubscribe = subscribe(options.storage, options.key, onStoreChange);
 
     const handler = (event: StorageEvent) => {
       if (
@@ -133,10 +98,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     globalThis.addEventListener('storage', handler);
 
     return () => {
-      listenerSet.delete(onStoreChange);
-      if (listenerSet.size <= 0) {
-        listeners.get(options.storage)?.delete(options.key);
-      }
+      unsubscribe();
       globalThis.removeEventListener('storage', handler);
     };
   }, [options.key, options.storage]);
@@ -147,10 +109,10 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     return options.storage.getItem(options.key) ?? undefined;
   }, [options.key, options.storage]);
 
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot, noop);
+  const snapshot = useSyncExternalStore(subscribeToStore, getSnapshot, noop);
 
-  const state = useMemo<InferOutput<Schema>>(() => {
-    return validate(parse(snapshot), options.schema);
+  const state = useMemo<StandardSchemaV1.InferOutput<Schema>>(() => {
+    return validateSchema(options.schema, parseJsonString(snapshot));
   }, [snapshot, options.schema]);
 
   const isRestoredRef = useRef(false);
@@ -159,14 +121,14 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     isRestoredRef.current = true;
 
     if (!options.storage) throw new Error('storage is not available');
-    options.onRestored?.(validate(parse(options.storage.getItem(options.key) ?? undefined), options.schema));
+    options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setState = useCallback<UseStorageSetState<InferOutput<Schema>>>((valueOrFn) => {
+  const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
     if (!options.storage) throw new Error('storage is not available');
 
-    const currentState = validate(parse(options.storage.getItem(options.key) ?? undefined), options.schema);
+    const currentState = validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined));
     const nextState = isFunction(valueOrFn) ? valueOrFn(currentState) : valueOrFn;
     const equals = options.equals ?? Object.is;
     if (equals(currentState, nextState)) return;
@@ -176,7 +138,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     } else {
       options.storage.setItem(options.key, JSON.stringify(nextState));
     }
-    getOrCreateListeners(options.storage, options.key).forEach((listener) => listener());
+    notify(options.storage, options.key);
   }, [options.key, options.storage, options.schema, options.equals]);
 
   return [state, setState];
@@ -221,7 +183,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
  */
 export const useLocalStorageState = <Schema extends StandardSchemaV1>(
   options: Omit<UseStorageStateOptions<Schema>, 'storage'>,
-): [InferOutput<Schema>, UseStorageSetState<InferOutput<Schema>>] => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
   return useStorageState({
     ...options,
     storage: globalThis.localStorage,
@@ -267,7 +229,7 @@ export const useLocalStorageState = <Schema extends StandardSchemaV1>(
  */
 export const useSessionStorageState = <Schema extends StandardSchemaV1>(
   options: Omit<UseStorageStateOptions<Schema>, 'storage'>,
-): [InferOutput<Schema>, UseStorageSetState<InferOutput<Schema>>] => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
   return useStorageState({
     ...options,
     storage: globalThis.sessionStorage,
