@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 
 import { isFunction } from '../internals/is-function';
 
@@ -61,6 +61,10 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
    * Defaults to `Object.is`.
    */
   equals?: ((a: InferOutput<Schema>, b: InferOutput<Schema>) => boolean) | undefined;
+  /**
+   * Callback invoked once with the value read from storage the first time it is read.
+   */
+  onRestored?: ((value: InferOutput<Schema>) => void) | undefined;
 };
 
 /**
@@ -148,6 +152,16 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
   const state = useMemo<InferOutput<Schema>>(() => {
     return validate(parse(snapshot), options.schema);
   }, [snapshot, options.schema]);
+
+  const isRestoredRef = useRef(false);
+  useEffect(() => {
+    if (isRestoredRef.current) return;
+    isRestoredRef.current = true;
+
+    if (!options.storage) throw new Error('storage is not available');
+    options.onRestored?.(validate(parse(options.storage.getItem(options.key) ?? undefined), options.schema));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setState = useCallback<UseStorageSetState<InferOutput<Schema>>>((valueOrFn) => {
     if (!options.storage) throw new Error('storage is not available');
