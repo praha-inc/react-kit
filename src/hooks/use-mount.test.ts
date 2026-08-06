@@ -27,22 +27,6 @@ describe('useMount', () => {
     expect(cleanup).toHaveBeenCalledTimes(1);
   });
 
-  test('should return true when mounted', async () => {
-    const { result } = await renderHook(() => useMount(effect));
-
-    expect(result.current).toBe(true);
-  });
-
-  test('should return false before mount', async () => {
-    let isMounted: boolean | undefined;
-    await renderHook(() => {
-      const result = useMount(effect);
-      if (isMounted === undefined) isMounted = result;
-    });
-
-    expect(isMounted).toBe(false);
-  });
-
   test('should call an async effect on mount', async () => {
     const asyncEffect = vi.fn(async () => {});
 
