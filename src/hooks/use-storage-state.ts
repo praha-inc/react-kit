@@ -31,7 +31,7 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
    * Called when the stored value fails to parse as JSON.
    * Its return value is used in place of the raw stored value. When omitted, the original error is thrown.
    */
-  fallback?: (() => unknown) | undefined;
+  fallback?: (() => StandardSchemaV1.InferOutput<Schema>) | undefined;
   /**
    * Callback invoked once with the value read from storage the first time it is read.
    */
