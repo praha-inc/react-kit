@@ -57,6 +57,29 @@ describe('useStorageState', () => {
     ).rejects.toThrow(TypeError);
   });
 
+  test('should throw the original error when the stored value is invalid JSON and no fallback is given', async () => {
+    localStorage.setItem('test', 'invalid');
+
+    await expect(() =>
+      renderHook(() =>
+        useStorageState({ key: 'test', storage: localStorage, schema: anySchema }),
+      ),
+    ).rejects.toThrow(SyntaxError);
+  });
+
+  test('should use the fallback value when the stored value is invalid JSON', async () => {
+    localStorage.setItem('test', 'invalid');
+
+    const fallback = vi.fn().mockReturnValue('default');
+
+    const { result } = await renderHook(() =>
+      useStorageState({ key: 'test', storage: localStorage, schema: anySchema, fallback }),
+    );
+
+    expect(result.current[0]).toBe('default');
+    expect(fallback).toHaveBeenCalledWith();
+  });
+
   test('should write to storage and update state when setState is called with a direct value', async () => {
     const { result, act } = await renderHook(() =>
       useStorageState({ key: 'test', storage: localStorage, schema: anySchema }),
