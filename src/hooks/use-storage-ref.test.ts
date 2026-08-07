@@ -142,6 +142,16 @@ describe('useStorageRef', () => {
     expect(removeItemSpy).not.toHaveBeenCalled();
   });
 
+  test('should throw when the value passed to setValue fails schema validation', async () => {
+    localStorage.setItem('test', JSON.stringify('value'));
+
+    const { result } = await renderHook(() =>
+      useStorageRef({ key: 'test', storage: localStorage, schema: stringSchema }),
+    );
+
+    expect(() => result.current[1](123 as unknown as string)).toThrow(TypeError);
+  });
+
   test('should use the custom equals function to skip writes', async () => {
     localStorage.setItem('test', JSON.stringify({ count: 1 }));
 

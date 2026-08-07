@@ -17,7 +17,7 @@ import type { StandardSchemaV1 } from '@standard-schema/spec';
 export const validateSchema = <Schema extends StandardSchemaV1>(
   schema: Schema,
   value: unknown,
-): StandardSchemaV1.InferInput<Schema> => {
+): StandardSchemaV1.InferOutput<Schema> => {
   const result = schema['~standard'].validate(value);
 
   if (result instanceof Promise) {
