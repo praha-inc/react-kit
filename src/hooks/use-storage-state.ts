@@ -6,7 +6,7 @@ import { notify, subscribe } from '../internals/storage-event-bus';
 import { validateSchema } from '../internals/validate-schema';
 
 import type { StandardSchemaV1 } from '@standard-schema/spec';
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch } from 'react';
 
 const noop = () => undefined;
 
@@ -31,7 +31,7 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
    * Called when the stored value fails to parse as JSON.
    * Its return value is used in place of the raw stored value. When omitted, the original error is thrown.
    */
-  fallback?: (() => StandardSchemaV1.InferOutput<Schema>) | undefined;
+  fallback?: (() => StandardSchemaV1.InferInput<Schema>) | undefined;
   /**
    * Callback invoked once with the value read from storage the first time it is read.
    */
@@ -42,9 +42,14 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
  * The setter returned by {@link useStorageState}.
  * Accepts a new value or an updater function, matching the `setState` signature from `useState`.
  *
- * @template T - The type of the stored value.
+ * The value written to storage is validated on the next read, not on write, so it is typed as the
+ * schema's input rather than its output. An updater function still receives the previously validated
+ * output as its argument.
+ *
+ * @template Input - The type accepted when writing a new value.
+ * @template Output - The validated type of the stored value.
  */
-export type UseStorageSetState<T> = Dispatch<SetStateAction<T>>;
+export type UseStorageSetState<Input, Output = Input> = Dispatch<Input | ((previous: Output) => Input)>;
 
 /**
  * A React hook that synchronizes state with a Web Storage entry (`localStorage` or `sessionStorage`).
@@ -58,7 +63,7 @@ export type UseStorageSetState<T> = Dispatch<SetStateAction<T>>;
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation.
+ * @throws {TypeError} When the stored value fails schema validation, or when a value passed to `setState` fails schema validation on write.
  * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
  *   otherwise the `fallback` function's return value is used in its place.
  *
@@ -88,7 +93,7 @@ export type UseStorageSetState<T> = Dispatch<SetStateAction<T>>;
  */
 export const useStorageState = <Schema extends StandardSchemaV1>(
   options: UseStorageStateOptions<Schema>,
-): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>] => {
   const subscribeToStore = useCallback((onStoreChange: () => void) => {
     if (!options.storage) throw new Error('storage is not available');
 
@@ -132,19 +137,23 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
+  const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
     if (!options.storage) throw new Error('storage is not available');
 
     const currentState = validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback));
     const nextState = isFunction(valueOrFn) ? valueOrFn(currentState) : valueOrFn;
-    const equals = options.equals ?? Object.is;
-    if (equals(currentState, nextState)) return;
 
     if (nextState === undefined) {
+      if (currentState === undefined) return;
       options.storage.removeItem(options.key);
-    } else {
-      options.storage.setItem(options.key, JSON.stringify(nextState));
+      notify(options.storage, options.key);
+      return;
     }
+
+    const equals = options.equals ?? Object.is;
+    if (equals(currentState, validateSchema(options.schema, nextState))) return;
+
+    options.storage.setItem(options.key, JSON.stringify(nextState));
     notify(options.storage, options.key);
   }, [options.key, options.storage, options.schema, options.equals, options.fallback]);
 
@@ -166,7 +175,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation.
+ * @throws {TypeError} When the stored value fails schema validation, or when a value passed to `setState` fails schema validation on write.
  * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
  *   otherwise the `fallback` function's return value is used in its place.
  *
@@ -192,7 +201,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
  */
 export const useLocalStorageState = <Schema extends StandardSchemaV1>(
   options: Omit<UseStorageStateOptions<Schema>, 'storage'>,
-): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>] => {
   return useStorageState({
     ...options,
     storage: globalThis.localStorage,
@@ -214,7 +223,7 @@ export const useLocalStorageState = <Schema extends StandardSchemaV1>(
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation.
+ * @throws {TypeError} When the stored value fails schema validation, or when a value passed to `setState` fails schema validation on write.
  * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
  *   otherwise the `fallback` function's return value is used in its place.
  *
@@ -240,7 +249,7 @@ export const useLocalStorageState = <Schema extends StandardSchemaV1>(
  */
 export const useSessionStorageState = <Schema extends StandardSchemaV1>(
   options: Omit<UseStorageStateOptions<Schema>, 'storage'>,
-): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>] => {
+): [StandardSchemaV1.InferOutput<Schema>, UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>] => {
   return useStorageState({
     ...options,
     storage: globalThis.sessionStorage,
