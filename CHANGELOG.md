@@ -1,5 +1,13 @@
 # @praha/react-kit
 
+## 0.5.2
+
+### Patch Changes
+
+- [#276](https://github.com/praha-inc/react-kit/pull/276) [`18b0e32`](https://github.com/praha-inc/react-kit/commit/18b0e32c9910e135dbb42d4f7c629833253dccb8) Thanks [@Karibash](https://github.com/Karibash)! - Fix places that incorrectly used `InferOutput<Schema>` where `InferInput<Schema>` should have been used
+
+- [#274](https://github.com/praha-inc/react-kit/pull/274) [`1c726b5`](https://github.com/praha-inc/react-kit/commit/1c726b57d9c830fdcee7fcf38461f9667fca1c0b) Thanks [@Karibash](https://github.com/Karibash)! - Type the `fallback` option of `useStorageRef` and `useStorageState` to return `StandardSchemaV1.InferOutput<Schema>` instead of `unknown`
+
 ## 0.5.1
 
 ### Patch Changes
