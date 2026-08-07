@@ -1,5 +1,13 @@
 # @praha/react-kit
 
+## 0.5.1
+
+### Patch Changes
+
+- [#270](https://github.com/praha-inc/react-kit/pull/270) [`0596300`](https://github.com/praha-inc/react-kit/commit/059630067e631e8334f8d001ae050959fc2c9c39) Thanks [@Karibash](https://github.com/Karibash)! - Add a fallback option to useStorageRef and useStorageState for handling invalid JSON in stored values
+
+  **Breaking change:** Previously, when a stored value was not valid JSON, it was silently treated as absent (`undefined`) with a `console.warn`. Now, an invalid JSON value causes the original `JSON.parse` error to be thrown unless a `fallback` option is provided to recover a value.
+
 ## 0.5.0
 
 ### Minor Changes
