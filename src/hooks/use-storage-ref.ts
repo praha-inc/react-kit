@@ -26,6 +26,11 @@ export type UseStorageRefOptions<Schema extends StandardSchemaV1> = {
    */
   equals?: ((a: StandardSchemaV1.InferOutput<Schema>, b: StandardSchemaV1.InferOutput<Schema>) => boolean) | undefined;
   /**
+   * Called when the stored value fails to parse as JSON.
+   * Its return value is used in place of the raw stored value. When omitted, the original error is thrown.
+   */
+  fallback?: (() => unknown) | undefined;
+  /**
    * Callback invoked once with the value read from storage the first time it is read.
    */
   onRestored?: ((value: StandardSchemaV1.InferOutput<Schema>) => void) | undefined;
@@ -67,7 +72,9 @@ export type UseStorageSetRef<T> = Dispatch<SetStateAction<T>>;
  * @returns A `[getValue, setValue]` tuple. `getValue` reads and validates the current value from storage.
  *   `setValue` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx
@@ -106,8 +113,8 @@ export const useStorageRef = <Schema extends StandardSchemaV1>(
   const getValue = useCallback((): StandardSchemaV1.InferOutput<Schema> => {
     if (!options.storage) throw new Error('storage is not available');
 
-    return validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined));
-  }, [options.key, options.storage, options.schema]);
+    return validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback));
+  }, [options.key, options.storage, options.schema, options.fallback]);
 
   const setValue = useCallback<UseStorageSetRef<StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
     if (!options.storage) throw new Error('storage is not available');
@@ -151,7 +158,9 @@ export const useStorageRef = <Schema extends StandardSchemaV1>(
  * @returns A `[getValue, setValue]` tuple. `getValue` reads and validates the current value from storage.
  *   `setValue` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx
@@ -195,7 +204,9 @@ export const useLocalStorageRef = <Schema extends StandardSchemaV1>(
  * @returns A `[getValue, setValue]` tuple. `getValue` reads and validates the current value from storage.
  *   `setValue` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx

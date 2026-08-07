@@ -28,6 +28,11 @@ export type UseStorageStateOptions<Schema extends StandardSchemaV1> = {
    */
   equals?: ((a: StandardSchemaV1.InferOutput<Schema>, b: StandardSchemaV1.InferOutput<Schema>) => boolean) | undefined;
   /**
+   * Called when the stored value fails to parse as JSON.
+   * Its return value is used in place of the raw stored value. When omitted, the original error is thrown.
+   */
+  fallback?: (() => unknown) | undefined;
+  /**
    * Callback invoked once with the value read from storage the first time it is read.
    */
   onRestored?: ((value: StandardSchemaV1.InferOutput<Schema>) => void) | undefined;
@@ -53,7 +58,9 @@ export type UseStorageSetState<T> = Dispatch<SetStateAction<T>>;
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx
@@ -112,8 +119,8 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
   const snapshot = useSyncExternalStore(subscribeToStore, getSnapshot, noop);
 
   const state = useMemo<StandardSchemaV1.InferOutput<Schema>>(() => {
-    return validateSchema(options.schema, parseJsonString(snapshot));
-  }, [snapshot, options.schema]);
+    return validateSchema(options.schema, parseJsonString(snapshot, options.fallback));
+  }, [snapshot, options.schema, options.fallback]);
 
   const isRestoredRef = useRef(false);
   useEffect(() => {
@@ -121,14 +128,14 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     isRestoredRef.current = true;
 
     if (!options.storage) throw new Error('storage is not available');
-    options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined)));
+    options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
     if (!options.storage) throw new Error('storage is not available');
 
-    const currentState = validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined));
+    const currentState = validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback));
     const nextState = isFunction(valueOrFn) ? valueOrFn(currentState) : valueOrFn;
     const equals = options.equals ?? Object.is;
     if (equals(currentState, nextState)) return;
@@ -139,7 +146,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
       options.storage.setItem(options.key, JSON.stringify(nextState));
     }
     notify(options.storage, options.key);
-  }, [options.key, options.storage, options.schema, options.equals]);
+  }, [options.key, options.storage, options.schema, options.equals, options.fallback]);
 
   return [state, setState];
 };
@@ -159,7 +166,9 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx
@@ -205,7 +214,9 @@ export const useLocalStorageState = <Schema extends StandardSchemaV1>(
  * @returns A `[state, setState]` tuple. `state` is the validated, typed value from storage.
  *   `setState` accepts either a new value or an updater function `(prev) => next`.
  *
- * @throws {TypeError} When the stored value fails schema validation or cannot be parsed as JSON.
+ * @throws {TypeError} When the stored value fails schema validation.
+ * @throws When the stored value cannot be parsed as JSON and no `fallback` option is provided;
+ *   otherwise the `fallback` function's return value is used in its place.
  *
  * @example
  * ```tsx

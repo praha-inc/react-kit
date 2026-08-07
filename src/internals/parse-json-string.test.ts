@@ -23,10 +23,14 @@ describe('parseJsonString', () => {
     expect(parseJsonString('42')).toBe(42);
   });
 
-  it('should return undefined and warn for an invalid JSON string', () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+  it('should throw the original error for an invalid JSON string when no fallback is given', () => {
+    expect(() => parseJsonString('invalid')).toThrow(SyntaxError);
+  });
 
-    expect(parseJsonString('invalid')).toBeUndefined();
-    expect(warn).toHaveBeenCalledWith('Failed to JSON parse for "invalid":', expect.anything());
+  it('should call fallback for an invalid JSON string', () => {
+    const fallback = vi.fn().mockReturnValue('default');
+
+    expect(parseJsonString('invalid', fallback)).toBe('default');
+    expect(fallback).toHaveBeenCalledExactlyOnceWith();
   });
 });
