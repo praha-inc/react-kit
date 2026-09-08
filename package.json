@@ -83,7 +83,7 @@
     "react-dom": "19.2.8",
     "typescript": "7.0.2",
     "vitest": "4.1.11",
-    "vitest-browser-react": "2.2.0"
+    "vitest-browser-react": "2.3.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",
