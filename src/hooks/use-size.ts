@@ -166,7 +166,7 @@ export const useSize = (options?: UseSizeOptions): [RefCallback<Element>, Size |
 
     resizeObserver.observe(target);
     return () => resizeObserver.disconnect();
-  // oxlint-disable-next-line react-hooks/exhaustive-deps
+  // oxlint-disable-next-line react/memo-dependencies react-hooks/exhaustive-deps
   }, []);
 
   return [ref, size];
