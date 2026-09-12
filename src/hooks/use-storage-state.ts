@@ -134,7 +134,7 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
 
     if (!options.storage) throw new Error('storage is not available');
     options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
   }, []);
 
   const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {

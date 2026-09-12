@@ -147,7 +147,7 @@ export const useStorageRef = <Schema extends StandardSchemaV1>(
     isRestoredRef.current = true;
 
     options.onRestored?.(getValue());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
   }, []);
 
   return [getValue, setValue];

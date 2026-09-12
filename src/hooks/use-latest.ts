@@ -45,6 +45,7 @@ import type { RefObject } from 'react';
  */
 export const useLatest = <T>(value: T): RefObject<T> => {
   const ref = useRef(value);
+  // oxlint-disable-next-line react/refs
   ref.current = value;
   return ref;
 };

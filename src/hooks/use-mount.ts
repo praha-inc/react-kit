@@ -79,6 +79,6 @@ export const useMount = (fn: MountCallback): void => {
     return () => {
       if (typeof cleanup === 'function') cleanup();
     };
-  // oxlint-disable-next-line react-hooks/exhaustive-deps
+  // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
   }, []);
 };
