@@ -22,8 +22,9 @@ describe('useLatest', () => {
     const { result, rerender } = await renderHook(
       (props) => {
         const callback = useLatest(props!.value);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return react-hooks/exhaustive-deps
-        return useCallback(() => callback.current?.(), []);
+        return useCallback(() => {
+          callback.current?.();
+        }, [callback]);
       },
       { initialProps: { value: callback } },
     );
