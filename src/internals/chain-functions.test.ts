@@ -14,8 +14,8 @@ describe('chainFunctions', () => {
 
   it('should call multiple functions in order with the same arguments', () => {
     const calls: string[] = [];
-    const fn1 = vi.fn(() => calls.push('first'));
-    const fn2 = vi.fn(() => calls.push('second'));
+    const fn1 = vi.fn<(value: string) => number>(() => calls.push('first'));
+    const fn2 = vi.fn<(value: string) => number>(() => calls.push('second'));
     const chained = chainFunctions(fn1, fn2);
 
     chained('value');
