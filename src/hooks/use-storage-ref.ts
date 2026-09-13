@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useEffectEvent, useRef } from 'react';
 
 import { isFunction } from '../internals/is-function';
 import { parseJsonString } from '../internals/parse-json-string';
@@ -141,13 +141,16 @@ export const useStorageRef = <Schema extends StandardSchemaV1>(
     notify(options.storage, options.key);
   }, [getValue, options.key, options.storage, options.schema, options.equals]);
 
+  const onRestored = useEffectEvent(() => {
+    options.onRestored?.(getValue());
+  });
+
   const isRestoredRef = useRef(false);
   useEffect(() => {
     if (isRestoredRef.current) return;
     isRestoredRef.current = true;
 
-    options.onRestored?.(getValue());
-  // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
+    onRestored();
   }, []);
 
   return [getValue, setValue];

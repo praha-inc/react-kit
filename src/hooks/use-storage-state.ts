@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useSyncExternalStore } from 'react';
 
 import { isFunction } from '../internals/is-function';
 import { parseJsonString } from '../internals/parse-json-string';
@@ -127,14 +127,17 @@ export const useStorageState = <Schema extends StandardSchemaV1>(
     return validateSchema(options.schema, parseJsonString(snapshot, options.fallback));
   }, [snapshot, options.schema, options.fallback]);
 
+  const onRestored = useEffectEvent(() => {
+    if (!options.storage) throw new Error('storage is not available');
+    options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback)));
+  });
+
   const isRestoredRef = useRef(false);
   useEffect(() => {
     if (isRestoredRef.current) return;
     isRestoredRef.current = true;
 
-    if (!options.storage) throw new Error('storage is not available');
-    options.onRestored?.(validateSchema(options.schema, parseJsonString(options.storage.getItem(options.key) ?? undefined, options.fallback)));
-    // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
+    onRestored();
   }, []);
 
   const setState = useCallback<UseStorageSetState<StandardSchemaV1.InferInput<Schema>, StandardSchemaV1.InferOutput<Schema>>>((valueOrFn) => {
