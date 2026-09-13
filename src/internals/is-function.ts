@@ -1,10 +1,8 @@
-// oxlint-disable typescript/no-explicit-any
-
 /**
  * Type guard that checks whether a given value is a function.
  *
  * @param value - The value to check.
- * @returns `true` if the value is a function, narrowing the type to `(...args: any[]) => any`.
+ * @returns `true` if the value is a function, narrowing the type to `(...args: never[]) => unknown`.
  *
  * @example
  * ```ts
@@ -12,6 +10,6 @@
  * isFunction('string'); // false
  * ```
  */
-export const isFunction = (value: unknown): value is (...args: any[]) => any => {
+export const isFunction = (value: unknown): value is (...args: never[]) => unknown => {
   return typeof value === 'function';
 };

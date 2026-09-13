@@ -14,8 +14,8 @@
  * fn('value'); // logs 'first value' then 'second value'
  * ```
  */
-export const chainFunctions = (...fns: ((...args: unknown[]) => unknown)[]) => {
-  return (...args: unknown[]) => {
+export const chainFunctions = <Args extends unknown[]>(...fns: ((...args: Args) => unknown)[]) => {
+  return (...args: Args) => {
     fns.forEach((fn) => fn(...args));
   };
 };
