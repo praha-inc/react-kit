@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useEffectEvent } from 'react';
 
 import type { EffectCallback } from 'react';
 
@@ -72,13 +72,14 @@ export type MountCallback = EffectCallback | (() => Promise<void>);
  * ```
  */
 export const useMount = (fn: MountCallback): void => {
+  const onMount = useEffectEvent(fn);
+
   useEffect(() => {
-    const result = fn();
+    const result = onMount();
     if (result instanceof Promise) return;
     const cleanup = result;
     return () => {
       if (typeof cleanup === 'function') cleanup();
     };
-  // oxlint-disable-next-line react/exhaustive-effect-dependencies react-hooks/exhaustive-deps
   }, []);
 };
