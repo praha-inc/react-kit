@@ -4,8 +4,7 @@ import { useLatest } from './use-latest';
 
 import type { DependencyList } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyFunction = (...args: any[]) => any;
+type AnyFunction = (...args: never[]) => unknown;
 
 /**
  * A React hook that wraps a callback function to be executed on the next animation frame using `requestAnimationFrame`.
