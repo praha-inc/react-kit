@@ -1,5 +1,21 @@
 # @praha/react-kit
 
+## 0.6.0
+
+### Minor Changes
+
+- [#320](https://github.com/praha-inc/react-kit/pull/320) [`9c4205d`](https://github.com/praha-inc/react-kit/commit/9c4205d02c6f3aa64773c746243f3a7096f93ac7) Thanks [@Karibash](https://github.com/Karibash)! - Add `useEventListener` hooks for subscribing to DOM events for the lifetime of a component
+
+- [#321](https://github.com/praha-inc/react-kit/pull/321) [`41770ab`](https://github.com/praha-inc/react-kit/commit/41770abcde5eec0255f459a065bdfe7790603cab) Thanks [@Karibash](https://github.com/Karibash)! - Bump react peer dependencies to ^19.2.0
+
+### Patch Changes
+
+- [#316](https://github.com/praha-inc/react-kit/pull/316) [`9baf590`](https://github.com/praha-inc/react-kit/commit/9baf5902d62b35788d1e5ea3ac03b66ad7e43cd6) Thanks [@Karibash](https://github.com/Karibash)! - Remove lint suppressions by tightening types and hook dependencies
+
+- [#312](https://github.com/praha-inc/react-kit/pull/312) [`b7a2ba8`](https://github.com/praha-inc/react-kit/commit/b7a2ba80ce55b496bae850be6a6b29257b0fb805) Thanks [@Karibash](https://github.com/Karibash)! - Improve type safety of internal function helpers
+
+- [#315](https://github.com/praha-inc/react-kit/pull/315) [`add7815`](https://github.com/praha-inc/react-kit/commit/add78150d8ee42f2febe8e9bdbd1b276b8d190b1) Thanks [@Karibash](https://github.com/Karibash)! - Replace effect dependency lint suppressions with useEffectEvent
+
 ## 0.5.2
 
 ### Patch Changes
