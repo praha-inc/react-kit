@@ -89,7 +89,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
-  "packageManager": "pnpm@12.4.1",
+  "packageManager": "pnpm@12.4.2",
   "publishConfig": {
     "provenance": true
   }
